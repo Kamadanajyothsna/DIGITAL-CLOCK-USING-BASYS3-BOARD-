@@ -1,0 +1,31 @@
+`timescale 1ns / 1ps 
+ module Seven_Segment_Module (                            //declaring inputs and outputs 
+ input clk,                                               //100MHz Baasys 3 Board input [3:0] min_ones 
+input [3:0] min_tens,  
+input [3:0] hrs_ones, 
+ input [3:0] hrs_tens,                                    //1 
+ output reg [6:0] seg, 
+ output reg [3:0] an 
+ );                
+
+//port identification - declaring wires and reg 
+
+reg [1:0] digit_display = 0;  
+reg [6:0] display [3:0];  
+reg [18:0] counter = 0;  
+parameter max_count = 500_000;                        //100MHz/100 Hz = 1M divided by 2 equals 500,000  wire [3:0] four_bit [3:0];                                              //Assigningvalues that needs to be reflected on display 
+assign four_bit[0] = min_ones;  
+assign four_bit[1] = min_tens; 
+ assign four_bit[2] = hrs_ones; 
+ assign four_bit[3] = hrs_tens;                       //100 Hz slow clock for enabling each segment at refresh rate of 10 
+                                       
+
+//Counter and Slow Clock Setup: 
+
+always @(posedge clk) begin 
+   if (counter < max_count) begin 
+      counter <= counter + 1; 
+   end else begin 
+      digit_display <= digit_display + 1; 
+      counter <= 0; 
+   end 
