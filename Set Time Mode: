@@ -1,0 +1,65 @@
+set_time: begin 
+ if (center)  
+begin                                  // Push center button to commit time set and return to Clock mode  
+clock_mode <= 1;  
+current_mode <= display_time;  
+end 
+ 
+if (counter < (25_000_000))  
+begin                                // setting-up clock speed to 4hz for pushbuttons  
+counter <= counter + 1 
+end else begin  
+counter <= 0; 
+
+//Time Adjustment with Up and Down Buttons: 
+
+case (toggle) 
+ 1'b0: begin                    //minutes change 
+ if (up) begin                 // Inc minutes when you push BTN_up  
+min <= min + 1;  
+end  
+
+if (down)   
+begin                                // Dec minutes when you push BTN_down 
+if (min > 0)  
+begin 
+ min <= min - 1;  
+end else if (hrs > 1) 
+ begin                             //2:00, 1:59 
+ hrs <= hrs - 1; 
+ min <= 59;  
+end else if (hrs == 1) 
+ begin                           //1:00, 12:59 
+ hrs <= 12; 
+ min <= 59;  
+end 
+ end 
+//toggle between hours and minutes to set a new time (Right and Left Buttons) 
+if (left || right)  
+begin  
+toggle <= 1;  
+end 
+ end                                     // end 1'b0  
+1'b1: begin                        //hours change  
+if (up) begin                     // Inc hours when you push BTN_up  
+hrs <= hrs + 1;  
+end if (down)  
+begin                             // Dec minutes when you push BTN_down  
+if (hrs > 1)  
+begin  
+hrs <= hrs - 1; 
+ end 
+else if (hrs == 1)  
+begin                                //1:00 
+ hrs <= 12;                       //AM_PM <= ~AM_PM; 
+end  
+end  
+if (right || left) 
+ toggle <= 0;  
+end  
+end 
+                                         // end 1'b1 
+ endcase                  // end case (current_bit)  
+end 
+ end                     // end Set_Clock endcase 
+                            // end case(Current_Mode) 
