@@ -1,0 +1,12 @@
+module DigitalClock_12hrFormat( 
+   input clk,                       // System clock 100 MHz 
+   input center,                    // Center button 
+   input right,                     // Right button 
+   input left,                      // Left button 
+   input up,                        // Up button 
+   input down,                      // Down button 
+   output [6:0] seg,                // 7 segments of the display 
+   output [3:0] an,                 // To enable 4 seven-segment displays 
+   output AMPM_indicator_led,       // Light on indicates PM, light off indicates AM 
+   output clock_mode_indicator_led  // Indicates clock in clock mode when light is on 
+); 
