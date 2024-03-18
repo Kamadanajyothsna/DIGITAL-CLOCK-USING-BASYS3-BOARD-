@@ -1,0 +1,31 @@
+reg [31:0] counter = 0;             // Counter for slow clock 
+parameter max_count = 100_000_000;  // 100 MHz / 1 Hz = 100M (1 second resolution) 
+reg [5:0] hrs, min, sec = 0;         // Hours 1 - 12, min 0 - 59, sec 0 - 59 
+reg [3:0] min_ones, min_tens, hrs_ones, hrs_tens = 0;  // BCD representation of time 
+reg toggle = 0;                     // Toggle between minutes and hours 
+reg pm = 0;                         // AM/PM indicator 
+reg clock_mode = 0;                 // Clock mode indicator 
+assign clock_mode_indicator_led = clock_mode             //instantiatingthe Seven Segment Module 
+
+//Instantiating Seven Segment Module: 
+
+Seven_Segment_Module SSM(clk, min_ones, min_tens, hrs_ones, hrs_tens , seg, an); 
+
+//Clock Mode and Display Mode: 
+
+parameter display_time = 1'b0;  
+parameter set_time = 1'b1; 
+ reg current_mode = set_time;  
+                   //Setting-up 1 second increment for clock and adjusting the new set time 
+always @(posedge clk) 
+ begin  
+case(current_mode)  
+display_time: begin                                               // Clock mode - 12:00AM to 11:59PM  
+if (center)  
+clock_mode <= 0;  
+current_mode <= set_time; 
+                                                                                // Reset variables to prepare for set timemode 
+counter <= 0;  
+toggle <= 0;  
+sec <= 0;  
+end 
