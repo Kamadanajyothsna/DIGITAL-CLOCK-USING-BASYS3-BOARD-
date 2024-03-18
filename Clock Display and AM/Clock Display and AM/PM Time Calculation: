@@ -1,0 +1,45 @@
+if (sec >= 60)  
+begin                 // After 60 seconds, increment minutes  
+sec <= 0; 
+ min <= min + 1; 
+ end  
+if (min >= 60) begin           // After 60 minutes, increment hours  
+min <= 0; 
+ hrs <= hrs + 1;  
+end if (hrs >= 24)  
+begin                                   // After 12 hours, swap between AM and PM  
+hrs <= 0;  
+end 
+
+//AM/PM Time Calculation: 
+
+else begin                         // 0 = AM PM Time 
+min_ones <= min % 10; // 1's of minutes 50/10=5  
+min_tens <= min / 10;  // 10's of minutes 12:50  
+if (hrs < 12) begin if (hrs == 0) 
+ begin                             //12:00 AM  
+0:hrs_ones <= 2;  
+hrs_tens <= 1;  
+end 
+
+//Clock Display and AM/PM Indicator Update: 
+
+else begin  
+hrs_ones <= hrs % 10;    // 1's of hours 7/10=7 
+hrs_tens <= hrs / 10;     // 10's of hours end  
+pm <= 0;  
+end  
+else begin                    // end Hours < 12  
+if (hrs == 12)  
+begin                           //12:00 PM  
+hrs_ones <= 2;  
+hrs_tens <= 1;  
+end  
+else begin  
+hrs_ones <= (hrs - 12) % 10;       // 1's of hours  
+hrs_tens <= (hrs - 12) / 10;         // 10's of hours end  
+pm <= 1; end                                // end  
+Hours >= 12 end                         // end Clock Display 
+ end  
+endmodule 
+ 
